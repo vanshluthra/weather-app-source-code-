@@ -25,24 +25,24 @@ class App extends React.Component {
       axios
       .get("http://ip-api.com/json")
       .then((resp) => {
-        //let status = response.status;
+        let status = resp.data.status;
         //console.log(response)
         let newCoordinates = {
           latitude: resp.data.lat,
           longitude: resp.data.lon,
         };
         // console.log(newCoordinates);
-        // console.log(this.state.coordinates);
+        console.log(this.state.coordinates);
         this.setState({ coordinates: newCoordinates });
         // console.log(newCoordinates);
-        // console.log(this.state.coordinates);
-
+        console.log(this.state.coordinates);
+        if(status==='success'){
         axios
         .get(
           `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.coordinates.latitude},${this.state.coordinates.longitude}`
         )
         .then((response) => {
-          //console.log(response)
+          console.log(response)
           let weatherData = {
             location: response.data.location.name,
             temperature: response.data.current.temperature,
@@ -58,7 +58,7 @@ class App extends React.Component {
 
           this.setState({ data: weatherData });
         })
-        .catch((error) => console.log(error.message));
+        .catch((error) => console.log(error.message));}
       })
       .catch((error) => {
         console.log(error.message);
