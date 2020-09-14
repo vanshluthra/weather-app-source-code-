@@ -31,14 +31,13 @@ class App extends React.Component {
           latitude: response.data.lat,
           longitude: response.data.lon,
         };
-        //console.log(newCoordinates);
+        // console.log(newCoordinates);
+        // console.log(this.state.coordinates);
         this.setState({ coordinates: newCoordinates });
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+        // console.log(newCoordinates);
+        // console.log(this.state.coordinates);
 
-      axios
+        axios
         .get(
           `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.coordinates.latitude},${this.state.coordinates.longitude}`
         )
@@ -60,6 +59,11 @@ class App extends React.Component {
           this.setState({ data: weatherData });
         })
         .catch((error) => console.log(error.message));
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+      
       })();
   }
 
