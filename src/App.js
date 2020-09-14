@@ -24,12 +24,12 @@ class App extends React.Component {
       (() =>{
       axios
       .get("http://ip-api.com/json")
-      .then((response) => {
+      .then((resp) => {
         //let status = response.status;
         //console.log(response)
         let newCoordinates = {
-          latitude: response.data.lat,
-          longitude: response.data.lon,
+          latitude: resp.data.lat,
+          longitude: resp.data.lon,
         };
         // console.log(newCoordinates);
         // console.log(this.state.coordinates);
