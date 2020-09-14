@@ -12,6 +12,7 @@ class App extends React.Component {
       coordinates: {
         latitude: 28.7041,
         longitude: 77.1025,
+        status:0
         //Just giving some default values, incase geolocation cant be fetched on any device
       },
       data: {},
@@ -25,18 +26,19 @@ class App extends React.Component {
       axios
       .get("http://ip-api.com/json")
       .then((resp) => {
-        let status = resp.data.status;
+        // let status = resp.data.status;
         //console.log(response)
         let newCoordinates = {
           latitude: resp.data.lat,
           longitude: resp.data.lon,
+          status:1
         };
         // console.log(newCoordinates);
         console.log(this.state.coordinates);
         this.setState({ coordinates: newCoordinates });
         // console.log(newCoordinates);
         console.log(this.state.coordinates);
-        if(status==='success'){
+        if(this.state.coordinates.status===1){
         axios
         .get(
           `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.coordinates.latitude},${this.state.coordinates.longitude}`
