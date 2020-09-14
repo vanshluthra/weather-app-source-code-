@@ -10,10 +10,9 @@ class App extends React.Component {
 
     this.state = {
       coordinates: {
-        latitude: 28.7041,
-        longitude: 77.1025,
-        status:0
-        //Just giving some default values, incase geolocation cant be fetched on any device
+        latitude: 0,
+        longitude: 0,
+        status: 0,
       },
       data: {},
       inputData: "",
@@ -21,52 +20,51 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
-      (() =>{
+    (() => {
       axios
-      .get("http://ip-api.com/json")
-      .then((resp) => {
-        // let status = resp.data.status;
-        //console.log(response)
-        let newCoordinates = {
-          latitude: resp.data.lat,
-          longitude: resp.data.lon,
-          status:1
-        };
-        // console.log(newCoordinates);
-        console.log(this.state.coordinates);
-        this.setState({ coordinates: newCoordinates });
-        // console.log(newCoordinates);
-        console.log(this.state.coordinates);
-        if(this.state.coordinates.status===1){
-        axios
-        .get(
-          `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.coordinates.latitude},${this.state.coordinates.longitude}`
-        )
-        .then((response) => {
-          console.log(response)
-          let weatherData = {
-            location: response.data.location.name,
-            temperature: response.data.current.temperature,
-            description: response.data.current.weather_descriptions[0],
-            region: response.data.location.region,
-            country: response.data.location.country,
-            wind_speed: response.data.current.wind_speed,
-            pressure: response.data.current.pressure,
-            precip: response.data.current.precip,
-            humidity: response.data.current.humidity,
-            img: response.data.current.weather_icons,
+        .get("http://ip-api.com/json")
+        .then((resp) => {
+          //console.log(response)
+          let newCoordinates = {
+            latitude: resp.data.lat,
+            longitude: resp.data.lon,
+            status: 1,
           };
+          // console.log(newCoordinates);
+          //console.log(this.state.coordinates);
+          this.setState({ coordinates: newCoordinates });
+          // console.log(newCoordinates);
+          //console.log(this.state.coordinates);
 
-          this.setState({ data: weatherData });
+          if (this.state.coordinates.status === 1) {
+            axios
+              .get(
+                `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.coordinates.latitude},${this.state.coordinates.longitude}`
+              )
+              .then((response) => {
+                console.log(response);
+                let weatherData = {
+                  location: response.data.location.name,
+                  temperature: response.data.current.temperature,
+                  description: response.data.current.weather_descriptions[0],
+                  region: response.data.location.region,
+                  country: response.data.location.country,
+                  wind_speed: response.data.current.wind_speed,
+                  pressure: response.data.current.pressure,
+                  precip: response.data.current.precip,
+                  humidity: response.data.current.humidity,
+                  img: response.data.current.weather_icons,
+                };
+
+                this.setState({ data: weatherData });
+              })
+              .catch((error) => console.log(error.message));
+          }
         })
-        .catch((error) => console.log(error.message));}
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-      
-      })();
+        .catch((error) => {
+          console.log(error.message);
+        });
+    })();
   }
 
   //track input field
