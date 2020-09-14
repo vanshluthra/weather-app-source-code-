@@ -20,43 +20,45 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    //We will use a HTML5 object(or API) called Navigator to know user location when app first loads
-    if (navigator.geolocation) {
-      //console.log("Supported")
-      navigator.geolocation.getCurrentPosition((position) => {
+
+      (() =>{
+      axios
+      .get("http://ip-api.com/json")
+      .then((response) => {
+        let status = response.status;
         let newCoordinates = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+          latitude: response.lat,
+          longitude: response.lon,
         };
-
         this.setState({ coordinates: newCoordinates });
-
-        axios
-          .get(
-            `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.coordinates.latitude},${this.state.coordinates.longitude}`
-          )
-          .then((response) => {
-            //console.log(response)
-            let weatherData = {
-              location: response.data.location.name,
-              temperature: response.data.current.temperature,
-              description: response.data.current.weather_descriptions[0],
-              region: response.data.location.region,
-              country: response.data.location.country,
-              wind_speed: response.data.current.wind_speed,
-              pressure: response.data.current.pressure,
-              precip: response.data.current.precip,
-              humidity: response.data.current.humidity,
-              img: response.data.current.weather_icons,
-            };
-
-            this.setState({ data: weatherData });
-          })
-          .catch((error) => console.log(error.message));
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
-    } else {
-      console.log("Not Supported");
-    }
+
+      axios
+        .get(
+          `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.coordinates.latitude},${this.state.coordinates.longitude}`
+        )
+        .then((response) => {
+          //console.log(response)
+          let weatherData = {
+            location: response.data.location.name,
+            temperature: response.data.current.temperature,
+            description: response.data.current.weather_descriptions[0],
+            region: response.data.location.region,
+            country: response.data.location.country,
+            wind_speed: response.data.current.wind_speed,
+            pressure: response.data.current.pressure,
+            precip: response.data.current.precip,
+            humidity: response.data.current.humidity,
+            img: response.data.current.weather_icons,
+          };
+
+          this.setState({ data: weatherData });
+        })
+        .catch((error) => console.log(error.message));
+      })();
   }
 
   //track input field
