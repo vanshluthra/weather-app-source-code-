@@ -9,46 +9,46 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      coordinates: {
-        latitude: 0,
-        longitude: 0,
-        status: 0,
+      city: {
+        name: "",
+        status: "",
+        regionName: "",
+        country: "",
       },
       data: {},
       inputData: "",
+      coordinates: {
+        latitude: 0,
+        longitude: 0,
+      },
     };
   }
-
   componentDidMount() {
     (() => {
       axios
         .get("http://ip-api.com/json")
         .then((resp) => {
-          //console.log(response)
-          let newCoordinates = {
-            latitude: resp.data.lat,
-            longitude: resp.data.lon,
-            status: 1,
+          let loc = {
+            name: resp.data.city,
+            status: resp.data.status,
+            regionName: resp.data.regionName,
+            country: resp.data.country,
           };
-          // console.log(newCoordinates);
-          //console.log(this.state.coordinates);
-          this.setState({ coordinates: newCoordinates });
-          // console.log(newCoordinates);
-          //console.log(this.state.coordinates);
+          this.setState({ city: loc });
 
-          if (this.state.coordinates.status === 1) {
+          if (this.state.city.status === "success") {
             axios
               .get(
-                `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.coordinates.latitude},${this.state.coordinates.longitude}`
+                `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.city.name}`
               )
               .then((response) => {
                 console.log(response);
                 let weatherData = {
-                  location: response.data.location.name,
+                  location: this.state.city.name,
                   temperature: response.data.current.temperature,
                   description: response.data.current.weather_descriptions[0],
-                  region: response.data.location.region,
-                  country: response.data.location.country,
+                  region: this.state.city.regionName,
+                  country: this.state.city.country,
                   wind_speed: response.data.current.wind_speed,
                   pressure: response.data.current.pressure,
                   precip: response.data.current.precip,
