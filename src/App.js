@@ -39,7 +39,7 @@ class App extends React.Component {
           if (this.state.city.status === "success") {
             axios
               .get(
-                `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.city.name}`
+                `http://api.weatherstack.com/current?access_key=30d6bf941b901170ff567dccbd73cbfc&query=${this.state.city.name}`
               )
               .then((response) => {
                 console.log(response);
@@ -78,7 +78,7 @@ class App extends React.Component {
     //api call
     axios
       .get(
-        `http://api.weatherstack.com/current?access_key=9b589bec07539a0a2aac5836fb5c6906&query=${this.state.inputData}`
+        `http://api.weatherstack.com/current?access_key=30d6bf941b901170ff567dccbd73cbfc&query=${this.state.inputData}`
       )
       .then((response) => {
         //console.log(response)
