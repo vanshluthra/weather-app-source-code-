@@ -99,7 +99,6 @@ class App extends React.Component {
       })
       .catch((error) => console.log(error.message));
   };
-
   render() {
     return (
       <div className="App">
